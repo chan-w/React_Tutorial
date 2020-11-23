@@ -1,3 +1,6 @@
+:root {
+    --square-dim: max(min(30vh, 8vw), 10px);/*34px;*/
+}
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 20px;
@@ -7,6 +10,9 @@ ol, ul {
     padding-left: 30px;
 }
 
+.board-row {
+    width: calc(var(--square-dim) * 3);
+}
 .board-row:after {
     clear: both;
     content: "";
@@ -21,15 +27,16 @@ ol, ul {
     background: #fff;
     border: 1px solid #999;
     float: left;
-    font-size: 24px;
+    /* Is it possible for calc() to return a negative number? */
+    font-size: max(calc(var(--square-dim) - 10px), 5px);/*24px;*/
     font-weight: bold;
-    line-height: 34px;
-    height: 34px;
+    line-height: var(--square-dim);
+    height: var(--square-dim);
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 34px;
+    width: var(--square-dim);
 }
 
 .square:focus {
@@ -47,4 +54,8 @@ ol, ul {
 
 .game-info {
     margin-left: 20px;
+}
+
+.about {
+    padding: 1em;
 }

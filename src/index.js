@@ -23,7 +23,7 @@ class Board extends React.Component {
     {}
     render() {
 	return (
-	        <div>
+	    <div>
 		<div className="board-row">
 		{this.renderSquare(0)}
 	    {this.renderSquare(1)}
@@ -43,6 +43,7 @@ class Board extends React.Component {
 	);
     }
 }
+
 class Game extends React.Component {
     constructor(props) {
 	super(props);	
@@ -53,11 +54,11 @@ class Game extends React.Component {
 		}],
 		xIsNext: true,
 		stepNumber: 0,
+		stepListReversed: false,
 	};
    }
    
 	handleClick(i) {
-		// const history = this.state.history;
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
 		const squares = current.squares.slice();
@@ -68,7 +69,7 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([{
 				squares: squares,
-				moveLocation: [Math.floor(i / 3), i % 3],
+				moveLocation: [i % 3, Math.floor(i / 3)],//[Math.floor(i / 3), i % 3],
 				movePlayer: this.state.xIsNext ? 'X' : 'O',
 			}]),
 			stepNumber: history.length,
@@ -81,27 +82,36 @@ class Game extends React.Component {
 		xIsNext: (step % 2) === 0,
 		});
 	}
+
+	toggleOrder() {
+		this.setState({
+			stepListReversed: !this.state.stepListReversed,
+		});
+	}
+
     render() {
 	document.title = "Tic-Tac-Toe";
 	const history = this.state.history;
 	const current = history[this.state.stepNumber];
 	const winner = calculateWinner(current.squares);
-	const winning_square_style =  {"background-color": "hsla(102, 100%, 60%, 0.51)",};
+	const winning_square_style =  {"backgroundColor": "hsla(102, 100%, 60%, 0.51)",};
 	
-	const moves = history.map((step, move) => {
+	const moves_original = history.map((step, move) => {
 		const desc = move ?
-			'Go to move #' + move + " (" + step.movePlayer + ": " + step.moveLocation + ")"/*+ ((step % 2) === 0 ? 'X' : 'O')*/:
+			'Go to move #' + move + " (" + step.movePlayer + ": " + step.moveLocation + ")":
 			'Go to game start';
 		return (
 		<li key={move}>
 			{this.state.stepNumber === move ? 
 			<button onClick={() => this.jumpTo(move)}><b>{desc} </b></button> :
 			<button onClick={() => this.jumpTo(move)}>{desc}</button>}
-			{/*<button onClick={() => this.jumpTo(move)}>{this.state.stepNumber === move ?
-														<b>{desc}</b> : {desc}}</button>*/}
 		</li>
 		);
 	});
+	const moves_reversed = moves_original.slice().reverse();
+
+	const orderButton = <button onClick={() => this.toggleOrder()}>Toggle Move Order</button>;
+
 	
 	let status;
 	if (winner) {
@@ -111,6 +121,7 @@ class Game extends React.Component {
 	} else {
 		status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 	}
+
 	return (
 	    <div className="game">
 		<div className="game-board">
@@ -122,9 +133,12 @@ class Game extends React.Component {
 		</div>
 		<div className="game-info">
 		<div>{status}</div>
-		<ol>{moves}</ol>
+		<div>{orderButton}</div>
+		<div>{this.state.stepListReversed ? <ol reversed> {moves_reversed} </ol> : <ol> {moves_original} </ol>}</div>
 		</div>
 		</div>
+
+
 	);
     }
 }
@@ -149,8 +163,6 @@ function calculateWinner(squares) {
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			// return squares[a];
-			// return [a, b, c];
 			return {"winning_player": squares[a],
 					"winning_squares": [a, b, c],
 				};

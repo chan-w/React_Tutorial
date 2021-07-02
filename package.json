@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pages.github.umn.edu/chan1766/React_Tutorial/",
+    "homepage": "https://chan-w.github.io/React_Tutorial/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.2",
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build -o 'public-github'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

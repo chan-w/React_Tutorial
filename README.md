@@ -1,3 +1,14 @@
+# Tic-Tac-Toe game from the React tutorial with added features:
+
+1.  Board scales to viewport size
+2.  Move history buttons show move in the format (player: column, row)
+3.  Current move button is bolded
+4.  "Toggle Move Order" button reverses the order of the move list
+5.  Squares that cause a win are highlighted
+6.  Message displayed when draw occurs
+
+# Create React App boilerplate below
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
